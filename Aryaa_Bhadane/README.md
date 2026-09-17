@@ -242,3 +242,6 @@ The application will be accessible at: **`http://localhost:5000`**
 | **Auditable Bid History Feed & Live Viewer Counter** | 15 | ✅ Prepend `bidHistory` with timestamps, live room viewer count tracking with `user:joined` and `user:left`. |
 | **Trading Floor Client UI Polish, Audio/Visual Cues & Architecture** | 10 | ✅ Luxury B&W trading floor design, Web Audio API sound synthesizer, pulse effects, clean modular architecture. |
 | **TOTAL** | **100** | **Fully Compliant** |
+
+
+DEPLOYMENT LINK: https://realtime-auction-platform-ll5j.onrender.com/
