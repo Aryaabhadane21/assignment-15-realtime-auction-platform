@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOTHEBY'S LIVE // Exclusive Real-Time Auction Floor</title>
+  
+  <!-- Google Fonts: Cinzel & Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient Luxury Background Gradient -->
+  <div class="ambient-glow"></div>
+
+  <!-- Outbid High-Priority Banner Notification -->
+  <div id="outbid-banner" class="outbid-banner hidden">
+    <div class="outbid-content">
+      <div class="outbid-icon">⚡</div>
+      <div class="outbid-text">
+        <span class="outbid-title">OUTBID ALERT</span>
+        <span id="outbid-message" class="outbid-desc">You have been outbid!</span>
+      </div>
+      <button id="quick-counter-bid-btn" class="outbid-action-btn">COUNTER BID</button>
+      <button id="close-outbid-btn" class="outbid-close">&times;</button>
+    </div>
+  </div>
+
+  <!-- Toast Notification System -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Top Global Navigation Bar -->
+  <header class="top-nav">
+    <div class="nav-left">
+      <div class="brand-badge">AUCTION HOUSE</div>
+      <h1 class="brand-title">VERITAS <span>// LIVE FLOOR</span></h1>
+    </div>
+
+    <!-- Live Auction Selector -->
+    <div class="room-selector-wrapper">
+      <label for="auction-room-select" class="selector-label">ACTIVE LOT:</label>
+      <select id="auction-room-select" class="room-select">
+        <option value="AUC_VINTAGE_99">LOT 099 — 1967 Vintage Fender Stratocaster</option>
+        <option value="AUC_ROLEX_77">LOT 077 — 1971 Rolex Daytona Paul Newman</option>
+        <option value="AUC_ART_42">LOT 042 — Pablo Picasso Lithograph (1954)</option>
+      </select>
+    </div>
+
+    <div class="nav-right">
+      <!-- Live Room Viewers -->
+      <div class="stat-pill live-pill">
+        <span class="pulse-dot"></span>
+        <span id="viewer-count" class="viewer-count">1</span>
+        <span class="stat-label">FLOOR VIEWERS</span>
+      </div>
+
+      <!-- Sound FX Toggle -->
+      <button id="sound-toggle-btn" class="icon-btn" title="Toggle Sound FX">
+        <span id="sound-icon">🔊</span>
+      </button>
+
+      <!-- User Profile Switcher -->
+      <div class="user-pill">
+        <div class="avatar-dot"></div>
+        <div class="user-info">
+          <span class="user-label">BIDDER ID</span>
+          <span id="current-user-display" class="user-name">Vikram</span>
+        </div>
+        <button id="change-user-btn" class="btn-text-sm">CHANGE</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Trading Floor Layout -->
+  <main class="trading-floor">
+    
+    <!-- LEFT PANEL: Lot Showcase & Countdown Timer -->
+    <section class="floor-panel lot-panel">
+      
+      <div class="lot-header">
+        <div class="lot-tags">
+          <span class="tag-badge lot-number" id="lot-tag">LOT #099</span>
+          <span class="tag-badge lot-category" id="lot-category">VINTAGE INSTRUMENTS</span>
+          <span class="tag-badge lot-status" id="lot-status-badge">● LIVE BIDDING</span>
+        </div>
+        <h2 id="lot-title" class="lot-title">1967 Vintage Fender Stratocaster</h2>
+        <p id="lot-desc" class="lot-description">
+          Original condition rare electric guitar in Sunburst finish with custom vintage hardware and provenance.
+        </p>
+      </div>
+
+      <div class="lot-image-container">
+        <img id="lot-image" src="https://images.unsplash.com/photo-1550291652-6ea9114a47b1?auto=format&fit=crop&w=800&q=80" alt="Auction Item Lot" class="lot-image">
+        <div class="image-overlay">
+          <span class="provenance-badge">CERTIFIED AUTHENTIC &bull; VERITAS ARCHIVE</span>
+        </div>
+      </div>
+
+      <!-- Countdown Clock Section -->
+      <div class="timer-section" id="timer-box">
+        <div class="timer-header">
+          <span class="timer-title">AUCTION COUNTDOWN</span>
+          <span id="anti-snipe-badge" class="anti-snipe-badge hidden">ANTI-SNIPE ARMED (<15s)</span>
+        </div>
+
+        <div class="timer-display-wrapper">
+          <div class="timer-number-box">
+            <span id="timer-seconds" class="timer-digits">60</span>
+            <span class="timer-unit">SECONDS REMAINING</span>
+          </div>
+          <div class="timer-progress-track">
+            <div id="timer-progress-bar" class="timer-progress-fill" style="width: 100%;"></div>
+          </div>
+        </div>
+
+        <div class="timer-footer">
+          <div class="snipe-rule-indicator">
+            <span class="snipe-icon">🛡️</span>
+            <span>Soft-Close Active: Bids in last 15s reset clock to 20s</span>
+          </div>
+          <button id="reset-auction-btn" class="btn-outline-sm" title="Reset auction for testing/demo">
+            ↺ RESTART LOT
+          </button>
+        </div>
+      </div>
+
+      <!-- Lot Specifications Grid -->
+      <div class="lot-specs-grid">
+        <div class="spec-card">
+          <span class="spec-label">STARTING PRICE</span>
+          <span id="spec-starting-price" class="spec-value">₹50,000</span>
+        </div>
+        <div class="spec-card">
+          <span class="spec-label">MIN INCREMENT</span>
+          <span id="spec-min-increment" class="spec-value">₹2,000</span>
+        </div>
+        <div class="spec-card">
+          <span class="spec-label">RESERVE STATUS</span>
+          <span class="spec-value reserve-met">MET &bull; UNRESERVED</span>
+        </div>
+        <div class="spec-card">
+          <span class="spec-label">SETTLEMENT</span>
+          <span class="spec-value">IMMEDIATE PROTOCOL</span>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- RIGHT PANEL: Bidding Terminal & Live Floor History -->
+    <section class="floor-panel bidding-panel">
+      
+      <!-- Top Leading Bid Card -->
+      <div class="current-bid-hero" id="current-bid-card">
+        <div class="bid-hero-header">
+          <span class="bid-hero-label">CURRENT LEADING BID</span>
+          <span id="live-indicator-tag" class="live-tag">● AUTHORITATIVE FEED</span>
+        </div>
+        
+        <div class="bid-amount-display">
+          <span class="currency-symbol">₹</span>
+          <span id="current-bid-value" class="bid-number">50,000</span>
+        </div>
+
+        <div class="highest-bidder-info" id="highest-bidder-box">
+          <span class="leader-label">HIGHEST BIDDER:</span>
+          <div class="leader-pill" id="leader-pill">
+            <span class="crown-icon">👑</span>
+            <span id="highest-bidder-name" class="leader-name">No bids yet</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bidding Action Console -->
+      <div class="bidding-console">
+        <div class="console-header">
+          <span class="console-title">PLACE LIVE BID</span>
+          <span class="min-next-bid-label">Next minimum: <strong id="next-min-bid-display">₹52,000</strong></span>
+        </div>
+
+        <!-- Quick Increment Buttons -->
+        <div class="quick-bid-row">
+          <button class="quick-bid-btn" data-increment="2000" id="quick-btn-1">+₹2,000</button>
+          <button class="quick-bid-btn" data-increment="5000" id="quick-btn-2">+₹5,000</button>
+          <button class="quick-bid-btn" data-increment="10000" id="quick-btn-3">+₹10,000</button>
+          <button class="quick-bid-btn" data-increment="25000" id="quick-btn-4">+₹25,000</button>
+        </div>
+
+        <!-- Custom Bid Input & Action -->
+        <form id="bid-form" class="bid-form">
+          <div class="input-container">
+            <span class="input-currency">₹</span>
+            <input 
+              type="number" 
+              id="bid-input" 
+              class="bid-input" 
+              placeholder="52000" 
+              step="500" 
+              required
+            >
+          </div>
+          <button type="submit" id="place-bid-btn" class="place-bid-btn">
+            <span class="bid-btn-text">CONFIRM & PLACE BID</span>
+            <span class="bid-btn-icon">➔</span>
+          </button>
+        </form>
+
+        <!-- Bidder Identity Quick Switcher Bar -->
+        <div class="persona-switch-bar">
+          <span class="persona-label">Switch Tab Persona:</span>
+          <button type="button" class="persona-btn active" data-user="Vikram">Vikram</button>
+          <button type="button" class="persona-btn" data-user="Ananya">Ananya</button>
+          <button type="button" class="persona-btn" data-user="Kabir">Kabir</button>
+          <button type="button" class="persona-btn" data-user="Zoya">Zoya</button>
+        </div>
+      </div>
+
+      <!-- Live Bid Audit Feed -->
+      <div class="bid-history-container">
+        <div class="history-header">
+          <div class="history-title-group">
+            <span class="history-title">LIVE TRANSACTION FEED</span>
+            <span class="history-subtitle">Audited Floor Log</span>
+          </div>
+          <span id="history-count-badge" class="history-badge">0 Bids</span>
+        </div>
+
+        <div class="history-table-wrapper">
+          <table class="history-table">
+            <thead>
+              <tr>
+                <th>TIME</th>
+                <th>BIDDER</th>
+                <th>AMOUNT</th>
+                <th class="text-right">STATUS</th>
+              </tr>
+            </thead>
+            <tbody id="bid-history-tbody">
+              <!-- Dynamically Populated -->
+              <tr class="empty-row">
+                <td colspan="4" class="text-center">No bids recorded yet. Awaiting floor opening...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Auction Sold Modal / Overlay -->
+  <div id="sold-modal" class="sold-modal hidden">
+    <div class="sold-modal-card">
+      <div class="sold-hammer-icon">🔨</div>
+      <div class="sold-badge" id="sold-modal-badge">HAMMER DOWN &bull; SOLD</div>
+      <h2 id="sold-modal-title" class="sold-modal-title">1967 Vintage Fender Stratocaster</h2>
+      
+      <div class="sold-stats-card">
+        <div class="sold-stat">
+          <span class="sold-stat-label">WINNING BIDDER</span>
+          <span id="sold-winner" class="sold-stat-val winner-name">Vikram</span>
+        </div>
+        <div class="sold-divider"></div>
+        <div class="sold-stat">
+          <span class="sold-stat-label">FINAL HAMMER PRICE</span>
+          <span id="sold-price" class="sold-stat-val price-val">₹62,000</span>
+        </div>
+      </div>
+
+      <p class="sold-subtext">The transaction has been finalized and recorded into the auction floor archive.</p>
+
+      <div class="sold-modal-actions">
+        <button id="modal-reset-btn" class="btn-primary">START NEXT ROUND</button>
+        <button id="modal-close-btn" class="btn-outline">VIEW RESULTS</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Change Username Modal -->
+  <div id="user-modal" class="user-modal hidden">
+    <div class="user-modal-card">
+      <h3>SET BIDDER IDENTITY</h3>
+      <p>Enter your display name to participate on the live bidding floor:</p>
+      <input type="text" id="username-input" class="username-input" placeholder="e.g. Vikram, Ananya, Kabir" maxlength="25">
+      <div class="modal-actions">
+        <button id="save-username-btn" class="btn-primary">JOIN FLOOR</button>
+        <button id="cancel-username-btn" class="btn-outline">CANCEL</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Socket.io Client Script -->
+  <script src="/socket.io/socket.io.js"></script>
+  <!-- Main Application Script -->
+  <script src="app.js"></script>
+</body>
+</html>
